@@ -1,0 +1,42 @@
+{
+  "name": "proj_f",
+  "version": "0.0.1",
+  "description": "go2map fe ci framework",
+  "main": "libs/index.js",
+  "scripts": {
+    "install-deps": "npm install --production",
+    "build": "node bin/build",
+    "serve": "node bin/serve",
+    "release": "node bin/release",
+    "setup": "npm run install-deps & npm run build",
+    "serve:prod": "NODE_ENV=production node bin/serve"
+  },
+  "author": "zhoujunpeng <zjp0432@163.com> (https://github.com/zhoujunpeng)",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/cors": "^2.2.1",
+    "glob": "^7.1.2",
+    "js-yaml": "^3.11.0",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.5",
+    "module-alias": "^2.0.6"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.2.1",
+    "vue": "^2.5.15",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "webpack": "^4.1.1"
+  },
+  "_moduleAliases": {
+    "@app": "./app",
+    "@libs": "./libs",
+    "@config": "./config",
+    "@static": "./static",
+    "@public": "./public",
+    "@tempalte": "./template"
+  }
+}

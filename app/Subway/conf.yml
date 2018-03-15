@@ -1,0 +1,20 @@
+name: subway
+routes:
+  - # get subway/sourceinfo 
+    name       : sourceinfo
+    method     : get
+    controller : index
+    action     : sourceinfo
+    auth       : false
+  - # post subway/pack
+    name       : pack
+    method     : post
+    controller : index
+    action     : pack
+    auth       : true
+  - # post subway/release
+    name       : release
+    method     : post
+    controller : index
+    action     : release
+    auth       : true

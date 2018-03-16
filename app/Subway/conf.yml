@@ -1,18 +1,27 @@
 name: subway
 routes:
+  - # get subway/
+    type       : page
+    path       : '/'
+    controller : index
+    action     : homepage
+    auth       : false
   - # get subway/sourceinfo 
+    type       : api
     name       : sourceinfo
     method     : get
     controller : index
     action     : sourceinfo
     auth       : false
   - # post subway/pack
+    type       : api
     name       : pack
     method     : post
     controller : index
     action     : pack
     auth       : true
   - # post subway/release
+    type       : api
     name       : release
     method     : post
     controller : index

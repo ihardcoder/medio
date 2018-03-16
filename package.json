@@ -6,22 +6,26 @@
   "scripts": {
     "install-deps": "npm install --production",
     "build": "node bin/build",
-    "serve": "node bin/serve",
+    "serve": "cross-env NODE_ENV=development node bin/serve",
     "release": "node bin/release",
     "setup": "npm run install-deps & npm run build",
-    "serve:prod": "NODE_ENV=production node bin/serve"
+    "serve:prod": "cross-env NODE_ENV=production node bin/serve"
   },
   "author": "zhoujunpeng <zjp0432@163.com> (https://github.com/zhoujunpeng)",
   "license": "MIT",
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "cross-env": "^5.1.4",
     "glob": "^7.1.2",
     "js-yaml": "^3.11.0",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
+    "koa-views": "^6.1.4",
+    "koa-views-render": "0.0.1",
     "lodash": "^4.17.5",
-    "module-alias": "^2.0.6"
+    "module-alias": "^2.0.6",
+    "pug": "^2.0.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",

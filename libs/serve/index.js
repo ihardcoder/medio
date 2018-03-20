@@ -1,39 +1,43 @@
-const _          = require('lodash');
-const Koa        = require('koa');
-const Glob       = require('glob');
-const Path       = require('path');
-const CORS       = require('@koa/cors');
-const Views      = require('koa-views');
-const Router     = require('koa-router')();
+const _ = require('lodash');
+const Koa = require('koa');
+const Glob = require('glob');
+const Path = require('path');
+const CORS = require('@koa/cors');
+const Mount = require('koa-mount');
+const Static = require('koa-static');
+const Router = require('koa-router')();
 const BodyParser = require('koa-bodyparser');
+
+const Utils = require('@libs/utils');
+const Constans = require('@libs/contants');
+const Paths = require('@config/common/path');
+const Routes = require('./routes');
 const RenderView = require('./middlewares/renderView');
 
-const Utils      = require('@libs/utils');
-const Constans   = require('@libs/contants');
-const Routes     = require('./routes');
-
-const Env        = _.includes(Constans.ENV,process.ENV) && process.NODE_ENV || 'testing';
-const ConfigEnv  = require(`@config/env/${Env}`);
+const Env = _.includes(Constans.ENV, process.ENV) && process.env.NODE_ENV || 'testing';
+const ConfigEnv = require(`@config/env/${Env}`);
 
 const PORT = ConfigEnv.port || 3000;
 const Server = new Koa();
 
-const AppRootPath = Path.resolve(__dirname,'../../app');
+const AppRootPath = Path.resolve(__dirname, '../../app');
 
 /**
  * @private
  * @function lift 启动服务器
  */
-function lift(){
+function lift() {
   Server
-  .use(RenderView())
-  .use(CORS({
-    credentials: true,
-    allowMethods: 'GET,POST'
-  }))
-  .use(BodyParser())
-  .use(Router.routes())
-  .use(Router.allowedMethods());
+    .use(Mount('/libs', Static(Paths.STATIC_LIBS_PATH)))
+    .use(Mount('/static', Static(Paths.STATIC_COUTPUT_PATH)))
+    .use(RenderView())
+    .use(CORS({
+      credentials: true,
+      allowMethods: 'GET,POST'
+    }))
+    .use(BodyParser())
+    .use(Router.routes())
+    .use(Router.allowedMethods());
 
   Server.listen(PORT, () => {
     console.log('Server is listening on port 3000');
@@ -46,16 +50,16 @@ function lift(){
  * @param {Object} conf 应用程序配置
  * @return {Promise}
  */
-function execute(conf){
-  if(_.isEmpty(conf) || !conf.name || !conf.routes || !_.isArray(conf.routes)){
+function execute(conf) {
+  if (_.isEmpty(conf) || !conf.name || !conf.routes || !_.isArray(conf.routes)) {
     Utils.Log.Error('<Serve>Invalid configuration for application(s)');
     return;
   }
   return new Promise(resolve => {
     const SubRouter = Routes(conf.name, conf.routes);
-    Router.use(`/${conf.name}`,SubRouter.routes(),SubRouter.allowedMethods());
+    Router.use(`/${conf.name}`, SubRouter.routes(), SubRouter.allowedMethods());
     resolve();
-  }).catch(err=>{
+  }).catch(err => {
     Utils.Log.Error(err);
   });
 }
@@ -78,7 +82,7 @@ function loadAppConfig(apps = []) {
   }
   return new Promise(resolve => {
     resolve(configFiles);
-  }).catch(err=>{
+  }).catch(err => {
     Utils.Log.Error(err);
   });
 }
@@ -91,7 +95,7 @@ function loadAppConfig(apps = []) {
  */
 async function launch(apps) {
   const ConfigFiles = await loadAppConfig(apps);
-  if(_.isEmpty(ConfigFiles)){
+  if (_.isEmpty(ConfigFiles)) {
     Utils.Log.Error('<Serve>Not found application(s)');
   }
   ConfigFiles.forEach(async conf => {

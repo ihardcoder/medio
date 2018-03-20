@@ -1,1 +1,1 @@
-exports.ENV = require('./_env')
+exports.ENV = require('./_env');

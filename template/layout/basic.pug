@@ -1,10 +1,20 @@
+include /extends/mixins.pug
+
 doctype html
 html
   head
     include /includes/metas.pug
     block metas
     block title
-    block styles
-    block sctipts
+    link(rel="shortcut icon" type="image/x-icon" href="https://www.sogou.com/images/logo/new/favicon.ico")
+    include /includes/styles.pug
+    block head-styles
+    block head-sctipts
   body
     block content
+
+    block body-styles
+    
+    include /includes/scripts.pug
+    
+    block body-scripts

@@ -3,5 +3,11 @@ extends /layout/basic.pug
 block title
   title 地铁图
 
+block head-styles
+  +css(index.css)
+
 block content
-  p ditietu
+  p hello
+
+block body-scripts
+  +js(index.js)

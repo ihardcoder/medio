@@ -1,8 +1,8 @@
+const _ = require('lodash');
 const Pug = require('pug');
 const Path = require('path');
-
-const AppRootPath = Path.resolve(__dirname,'../../../app');
-const TemplateRootPath = Path.resolve(__dirname,'../../../template');
+const Utils = require('@libs/utils');
+const Paths = require('@config/common/path');
 
 module.exports = function(){
   return async function(ctx,next){
@@ -10,11 +10,12 @@ module.exports = function(){
 
     ctx.response.renderView = ctx.renderView = function(name,locals){
       const ViewFileName = /\.pug?/.test(name) && name || `${name}.pug`;
-      const ViewFilePath = `${AppRootPath}/${AppName}/view/${ViewFileName}`;
+      const ViewFilePath = `${Paths.APP_ROOT_PATH}/${AppName}/view/${ViewFileName}`;
       const ViewRuntime = Pug.compileFile(ViewFilePath,{
-        basedir: TemplateRootPath
+        basedir: Paths.TEMPLATE_ROOT_PATH
       });
-      return ViewRuntime(locals||{});
+    
+      return ViewRuntime(Utils.Parser.formatLocals(locals)||{});
     };
     await next();
   }

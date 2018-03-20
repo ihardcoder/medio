@@ -1,20 +1,8 @@
-name: subway
+name: <%=appname%>
 routes:
-  - # get subway/sourceinfo 
-    name       : sourceinfo
-    method     : get
+  - # get <%=appname%>/
+    type       : page
+    path       : '/'
     controller : index
-    action     : sourceinfo
+    action     : homepage
     auth       : false
-  - # post subway/pack
-    name       : pack
-    method     : post
-    controller : index
-    action     : pack
-    auth       : true
-  - # post subway/release
-    name       : release
-    method     : post
-    controller : index
-    action     : release
-    auth       : true

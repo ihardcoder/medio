@@ -1,0 +1,7 @@
+const Path = require('path');
+const Paths = require('@config/common/path');
+const StaticFiles = require(`${Paths.STATIC_COUTPUT_PATH}/static-map.json`);
+
+exports.homepage = ctx => {
+  return ctx.renderView('index',StaticFiles.<%=appname%>);
+};

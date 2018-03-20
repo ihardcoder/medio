@@ -1,0 +1,13 @@
+extends /layout/basic.pug
+
+block title
+  title <%=appname%>
+
+block head-styles
+  +css(index.css)
+
+block content
+  p <%=appname%>
+
+block body-scripts
+  +js(index.js)

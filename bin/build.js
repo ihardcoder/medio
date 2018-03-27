@@ -15,8 +15,9 @@ const Apps = process.argv[2] && _.uniq(process.argv[2].split(',')) || [];
 
 const Pattern = Apps && Apps.length > 0 ? `${Paths.APP_ROOT_PATH}/[${apps.join('|')}]/conf.build.js` : `${Paths.APP_ROOT_PATH}/**/conf.build.js`;
 
-const Configs = Glob.sync(Pattern).map(file => require(file));
+const Configs = Glob.sync(Pattern).map(file => Merge(BasicWebpackConfig,require(file)));
 
-const WebpackConfig = Merge(BasicWebpackConfig, ...Configs);
+// console.log(Configs)
+// const WebpackConfig = Merge(BasicWebpackConfig, ...Configs);
 
-Build(WebpackConfig);
+Build(Configs);

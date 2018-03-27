@@ -15,8 +15,8 @@ module.exports = function(){
         basedir: Paths.TEMPLATE_ROOT_PATH
       });
     
-      return ViewRuntime(Utils.Parser.formatLocals(locals)||{});
+      return ViewRuntime(locals||{});
     };
     await next();
   }
-}
+};

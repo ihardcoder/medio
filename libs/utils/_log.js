@@ -4,7 +4,8 @@
  * @param {string|Object} msg 信息文本/对象
  */
 exports.Error = msg => {
-  console.error(msg);
+  // console.error(msg);
+  throw new Error(msg);
   process.exit();
 };
 

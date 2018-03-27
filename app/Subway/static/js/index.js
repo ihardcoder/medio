@@ -1,7 +1,15 @@
-import '@subway/style/index.css';
-console.log(1)
-window.onload = function(){
-  require.ensure([],require=>{
-    require('./_part.js')
-  },'subway.part');
+import '@subway/style/index.scss';
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+  el: '#app',
+  template: '<app></app>',
+  components: {
+    App
+  }
+});
+
+window.onload = () => {
+  import('./_part.js')
 }

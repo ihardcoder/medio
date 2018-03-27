@@ -1,36 +1,46 @@
 const Path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const Webpack = require('webpack');
+const Merge = require('webpack-merge');
+const ConfOfVue = require('./conf.build.vue');
 
-const ExtractCSS = new ExtractTextPlugin({
-  filename: 'css/[name].[contenthash:8].css',
-  allChunks: true
-});
-
-module.exports = {
+module.exports = Merge({
   entry: {
-    subway: Path.resolve(__dirname, './static/js/index.js')
+    <%= appname%>: Path.resolve(__dirname, './static/js/index.js'),
+    common: ['vue']
+  },
+  output: {
+    filename: '<%= appname%>/js/[name].[chunkhash:8].js',
+    chunkFilename: '<%= appname%>/js/modules/[name].[chunkhash:8].js',
   },
   module: {
     rules: [{
-      test: /\.css$/,
-      use: ExtractCSS.extract({
-        use: [{
-          loader: 'css-loader',
-          options: {
-            url: true,
-            minimize: true
-          }
-        }],
-        fallback: 'style-loader'
-      })
+      test: /\.scss$/,
+      use: ['style-loader','css-loader','sass-loader']
+    }, {
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: '<%= appname%>/assets/img/[name].[hash:8].[ext]'
+      }
+    }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: '<%= appname%>/assets/fonts/[name].[hash:7].[ext]'
+      }
     }]
   },
   plugins: [
-    ExtractCSS
+    new Webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      filename: '<%= appname%>/js/common.[chunkhash:8].js'
+    })
   ],
   resolve: {
     alias: {
-      '@<%=appname%>': Path.resolve(__dirname,'./static')
+      '@<%= appname%>': Path.resolve(__dirname,'./static')
     }
   }
-};
+},ConfOfVue());

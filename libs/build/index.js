@@ -8,7 +8,7 @@ module.exports = function(webpackConfig){
     // clear output directory
     Shell.rm('-rf',Paths.STATIC_COUTPUT_PATH);
     Shell.mkdir('-p',Paths.STATIC_COUTPUT_PATH);
-    Webpack(webpackConfig).run((err, stats) => {
+    Webpack(webpackConfig,(err, stats) => {
       if (err) {
         throw err;
       }

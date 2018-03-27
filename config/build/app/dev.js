@@ -36,7 +36,7 @@ module.exports = Merge(BasicWebpackConfig, {
   plugins: [
     new Webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: 'development'
+        NODE_ENV: '"development"'
       }
     }),
     new Webpack.HotModuleReplacementPlugin(),

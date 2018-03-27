@@ -12,7 +12,7 @@ function renderTpl(path,appname){
   return new Promise(resolve => {
     Ejs.renderFile(path,{
       appname
-    },{},(err,content) => {
+    },(err,content) => {
       if(err){
         Utils.Log.Error(err);
       }
@@ -53,5 +53,4 @@ module.exports = appname => {
   }).catch(err => {
     Utils.Log.Error(err);
   });
-
 };

@@ -1,0 +1,13 @@
+.gitignore
+.npmignore
+/app/.babelrc
+/app/.postcssrc.js
+/app/**/static/
+/app/**/conf.build.js
+/bin/build.js
+/bin/generate.js
+/bin/reslease.js
+/config/build
+/libs/generator
+/libs/build
+/test

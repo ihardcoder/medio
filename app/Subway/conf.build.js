@@ -2,16 +2,15 @@ const Path = require('path');
 const Webpack = require('webpack');
 const Merge = require('webpack-merge');
 const ConfOfVue = require('./conf.build.vue');
+const IsDev = process.env.NODE_ENV === 'development';
 
 module.exports = Merge({
   entry: {
-    index: Path.resolve(__dirname, './static/js/index.js'),
-    test: Path.resolve(__dirname, './static/js/test.js'),
-    common: ['vue']
+    index: Path.resolve(__dirname, './static/js/index.js')
   },
   output: {
-    filename: 'subway/js/[name].[chunkhash:8].js',
-    chunkFilename: 'subway/js/modules/[name].[chunkhash:8].js',
+    filename: `subway/js/${IsDev?'[name]':'[name].[chunkhash:8]'}.js`,
+    chunkFilename: `subway/js/modules/${IsDev?'[name]' : '[name].[chunkhash:8]'}.js`,
   },
   profile: true,
   module: {
@@ -23,23 +22,17 @@ module.exports = Merge({
       loader: 'url-loader',
       options: {
         limit: 10000,
-        name: 'subway/assets/img/[name].[hash:8].[ext]'
+        name: `subway/assets/img/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
       }
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       loader: 'url-loader',
       options: {
         limit: 10000,
-        name: 'subway/assets/fonts/[name].[hash:7].[ext]'
+        name: `subway/assets/fonts/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
       }
     }]
   },
-  plugins: [
-    new Webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      filename: 'subway/js/common.[chunkhash:8].js'
-    })
-  ],
   resolve: {
     alias: {
       '@subway': Path.resolve(__dirname,'./static')

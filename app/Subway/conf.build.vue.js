@@ -1,6 +1,6 @@
 const Path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+const IsDev = process.env.NODE_ENV === 'development';
 const DEFAULT_OPTIONS = {
   extractCss: true
 };
@@ -12,7 +12,7 @@ module.exports = function(opts) {
   const PublicPath = '';
   // extract css files 
   const ExtractPlugin = new ExtractTextPlugin({
-    filename: 'subway/style/[name].[chunkhash:8].css',
+    filename: `subway/style/${IsDev?'[name]':'[name].[chunkhash:8]'}.css`,
     allChunks: true,
     ignoreOrder: true
   });
@@ -74,10 +74,12 @@ module.exports = function(opts) {
     },
     plugins: Plugins,
     resolve: {
-      extensions: ['.js', '.vue', '.json'],
-      alias: {
-        'vue$': 'vue/dist/vue.esm.js'
-      }
+      extensions: ['.js', '.vue', '.json']
+    },
+    externals: {
+      'vue': 'Vue',
+      'vuex': 'Vuex',
+      'vue-router': 'VueRouter'
     }
   };
 };

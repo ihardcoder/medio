@@ -1,6 +1,5 @@
 const Path = require('path');
 const Paths = require('@config/common/path');
-const StaticMapPulgin = require('../../../../webpack-staticmap-plugin');
 const Env = process.env.NODE_ENV || 'testing';
 
 module.exports = {
@@ -14,8 +13,5 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader'
     }]
-  },
-  plugins: [
-    new StaticMapPulgin()
-  ]
+  }
 };

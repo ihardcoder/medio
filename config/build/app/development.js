@@ -1,7 +1,7 @@
 const Webpack = require('webpack');
 const Merge = require('webpack-merge');
+const StaticMapPulgin = require('../../../../webpack-staticmap-plugin');
 const BasicWebpackConfig = require('./basic.js');
-const FriendlyErrorsPlugin = require('friendly-errors-Webpack-plugin');
 
 module.exports = Merge(BasicWebpackConfig, {
   devtool: '#source-map',
@@ -34,6 +34,9 @@ module.exports = Merge(BasicWebpackConfig, {
     }
   },
   plugins: [
+    new StaticMapPulgin({
+      dev: true
+    }),
     new Webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"'
@@ -41,11 +44,6 @@ module.exports = Merge(BasicWebpackConfig, {
     }),
     new Webpack.HotModuleReplacementPlugin(),
     new Webpack.NamedModulesPlugin(),
-    new Webpack.NoEmitOnErrorsPlugin(),
-    new FriendlyErrorsPlugin({
-      compilationSuccessInfo: {
-        messages: [`Your application is running here: http://localhost:8888`],
-      }
-    })
+    new Webpack.NoEmitOnErrorsPlugin()
   ]
 });

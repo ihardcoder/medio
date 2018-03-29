@@ -1,21 +1,22 @@
 const _ = require('lodash');
 const Path = require('path');
+const Express = require('express');
 
 module.exports = (name, routes) => {
-  const Router = require('koa-router')();
+  const Router = Express.Router();
 
   routes.forEach(route => {
     const Controller = require(`@app/${_.capitalize(name)}/controller/${route.controller}`);
-    switch(route.type){
+    switch (route.type) {
       case 'api':
-        Router[route.method || 'all'](`/${route.name}`, async (ctx,next) => {
-          ctx.body = await Controller[route.action](ctx);
+        Router[route.method || 'all'](`/${route.name}`, (req, res, next) => {
+          Controller[route.action](req, res);
           next();
         });
         break;
       case "page":
-        Router.get(Path.join('/',route.path), async (ctx,next) => {
-          ctx.body = await Controller[route.action](ctx);
+        Router.get(Path.join('/', route.path), (req, res, next) => {
+          Controller[route.action](req, res);
           next();
         });
         break;

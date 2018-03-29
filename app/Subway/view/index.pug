@@ -4,11 +4,17 @@ block title
   title 地铁图
 
 block head-styles
+  +libCSS("element-ui.min.css")
   +css(index.css)
 
 block content
-  div#app
+  div#window
+    ci-header
+    router-view
 
 block body-scripts
-  +js(common.js)
+  +libJS("vue.min.js")
+  +libJS("vue-router.min.js")
+  +libJS("vuex.min.js")
+  +libJS("element-ui.min.js")
   +js(index.js)

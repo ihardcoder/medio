@@ -3,3 +3,9 @@ mixin js(name)
 
 mixin css(name)
   link(rel="stylesheet" href=name)
+
+mixin libJS(name)
+ script(type="text/javascript" src="/libs/js/"+name)
+
+mixin libCSS(name)
+ link(rel="stylesheet" href="/libs/style/"+name)

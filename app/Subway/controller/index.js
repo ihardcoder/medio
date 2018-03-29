@@ -1,16 +1,22 @@
 const Path = require('path');
 const Paths = require('@config/common/path');
-const StaticFiles = require(`${Paths.STATIC_COUTPUT_PATH}/subway/static.json`);
+const RenderView = require('@libs/utils').RenderView;
+const IsDev = process.env.NODE_ENV === 'development';
+const StaticFiles = !IsDev ? require(`${Paths.STATIC_COUTPUT_PATH}/subway/static.json`) : null;
 
-exports.sourceinfo = ctx => {
-  return 'sourceinfo';
+exports.sourceinfo = (req, res) => {
+  res.send('sourceinfo');
 };
-exports.pack = ctx => {
-  return 'pack';
+exports.pack = (req, res) => {
+  res.send('pack');
 };
-exports.release = ctx => {
-  return 'release';
+exports.release = (req, res) => {
+  res.send('release');
 };
-exports.homepage = ctx => {
-  return ctx.renderView('index',StaticFiles);
+exports.homepage = (req, res) => {
+  if(IsDev){
+    res.send(RenderView(req.path, 'index',global.subway));  
+  }else{
+    res.send(RenderView(req.path, 'index',StaticFiles));
+  }
 };

@@ -1,26 +1,28 @@
-const _ = require('lodash');
-const Koa = require('koa');
-const Glob = require('glob');
-const Path = require('path');
-const CORS = require('@koa/cors');
-const Mount = require('koa-mount');
-const Static = require('koa-static');
-const Router = require('koa-router')();
-const BodyParser = require('koa-bodyparser');
-
-const Utils = require('@libs/utils');
+const _        = require('lodash');
+const Glob     = require('glob');
+const Path     = require('path');
+const Express  = require('express');
+const Utils    = require('@libs/utils');
 const Constans = require('@libs/contants');
-const Paths = require('@config/common/path');
-const Routes = require('./routes');
-const RenderView = require('./middlewares/renderView');
+const Paths    = require('@config/common/path');
+const Routes   = require('./routes');
 
-const Env = _.includes(Constans.ENV, process.ENV) && process.env.NODE_ENV || 'testing';
-const ConfigEnv = require(`@config/env/${Env}`);
+const ENV_CURRENT = _.includes(Constans.ENV, process.env.NODE_ENV) && process.env.NODE_ENV || 'testing';
 
-const PORT = ConfigEnv.port || 3000;
-const Server = new Koa();
+const GLOBAL_CONFIG = require(`@config/env/${ENV_CURRENT}`);
 
-const AppRootPath = Path.resolve(__dirname, '../../app');
+const PORT = GLOBAL_CONFIG.port || 3000;
+
+const Server = new Express();
+
+/**
+ * @private
+ * @function launchDevMiddlewares 加载开发中间件
+ */
+function launchDevMiddlewares(webpackConfig) {
+  const WebpackMiddleWare = require('./middlewares/dev-webpack')(webpackConfig);
+  Server.use(WebpackMiddleWare.dev).use(WebpackMiddleWare.hot);
+}
 
 /**
  * @private
@@ -28,16 +30,9 @@ const AppRootPath = Path.resolve(__dirname, '../../app');
  */
 function lift() {
   Server
-    .use(Mount('/libs', Static(Paths.STATIC_LIBS_PATH)))
-    .use(Mount('/static', Static(Paths.STATIC_COUTPUT_PATH)))
-    .use(RenderView())
-    .use(CORS({
-      credentials: true,
-      allowMethods: 'GET,POST'
-    }))
-    .use(BodyParser())
-    .use(Router.routes())
-    .use(Router.allowedMethods());
+    .use('/libs', Express.static(Paths.STATIC_LIBS_PATH))
+    .use('/static', Express.static(Paths.STATIC_COUTPUT_PATH))
+    .use(Express.json());
 
   Server.listen(PORT, () => {
     console.log('Server is listening on port 3000');
@@ -57,7 +52,7 @@ function execute(conf) {
   }
   return new Promise(resolve => {
     const SubRouter = Routes(conf.name, conf.routes);
-    Router.use(`/${conf.name}`, SubRouter.routes(), SubRouter.allowedMethods());
+    Server.use(`/${conf.name}`, SubRouter);
     resolve();
   }).catch(err => {
     Utils.Log.Error(err);
@@ -72,16 +67,15 @@ function execute(conf) {
  * @return {Promise} 
  */
 function loadAppConfig(apps = []) {
-  let configFiles = null;
-  if (_.isEmpty(apps)) {
-    configFiles = Glob.sync(`${AppRootPath}/**/conf.yml`);
-  } else {
-    configFiles = apps.map(name => {
-      return `${AppRootPath}/${_.capitalize(name)}/conf.yml`
-    });
-  }
+  const AppRootPath = Path.resolve(__dirname, '../../app');  
   return new Promise(resolve => {
-    resolve(configFiles);
+    if (_.isEmpty(apps)) {
+      resolve(Glob.sync(`${AppRootPath}/**/conf.yml`));
+    } else {
+      resolve(apps.map(name => {
+        return `${AppRootPath}/${_.capitalize(name)}/conf.yml`
+      }));
+    }
   }).catch(err => {
     Utils.Log.Error(err);
   });
@@ -101,13 +95,17 @@ async function launch(apps) {
   ConfigFiles.forEach(async conf => {
     await execute(Utils.Parser.ymlToJson(conf));
   });
-  lift();
 }
 
 /**
  * @module libs/serve
  * @param {Array} apps 启动的应用程序列表
+ * @param {Object|null} webpackConfig webpack配置
  */
-module.exports = apps => {
-  launch(apps);
+module.exports = async (apps, webpackConfig) => {
+  await launch(apps);
+  if (webpackConfig && ENV_CURRENT === 'development') {
+    launchDevMiddlewares(webpackConfig);
+  }
+  lift(webpackConfig);
 };

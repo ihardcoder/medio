@@ -1,7 +1,7 @@
 extends /layout/basic.pug
 
 block title
-  title <%=appname%>
+  title 搜狗地图Web前端集成平台
 
 block head-styles
   +libCSS("element-ui.min.css")
@@ -15,4 +15,5 @@ block body-scripts
   +libJS("vue-router.min.js")
   +libJS("vuex.min.js")
   +libJS("element-ui.min.js")
+  +libJS("utils.js")
   +js(index.js)

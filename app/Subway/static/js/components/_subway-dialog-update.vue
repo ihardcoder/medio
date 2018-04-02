@@ -220,7 +220,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../style/part/_expend.scss';
+@import '../../style/_expend.scss';
 .ci__subway__dialog{
   .dialog__body{
     position: relative;

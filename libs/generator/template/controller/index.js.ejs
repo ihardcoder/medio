@@ -1,7 +1,12 @@
 const Path = require('path');
 const Paths = require('@config/common/path');
-const StaticFiles = require(`${Paths.STATIC_COUTPUT_PATH}/static-map.json`);
+const IsDev = process.env.NODE_ENV === 'development';
+const StaticFiles = !IsDev ? require(`${Paths.STATIC_COUTPUT_PATH}/subway/static.json`) : null;
 
-exports.homepage = ctx => {
-  return ctx.renderView('index',StaticFiles.<%=appname%>);
+exports.homepage = (req, res) => {
+  if(IsDev){
+    res.view('index',global.subway);
+  }else{
+    res.view('index',StaticFiles);
+  }
 };

@@ -12,7 +12,7 @@ module.exports = function(opts) {
   const PublicPath = '';
   // extract css files 
   const ExtractPlugin = new ExtractTextPlugin({
-    filename: `<%=appname%>/style/${IsDev?'[name]':'[name].[chunkhash:8]'}.css`,
+    filename: `passport/style/${IsDev?'[name]':'[name].[chunkhash:8]'}.css`,
     allChunks: true,
     ignoreOrder: true
   });

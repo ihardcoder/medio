@@ -1,5 +1,5 @@
 <template>
-<section class="sec-login">
+<div class="sec-login">
   <el-form :model="submitData" :rules="validRules" label-position="right" label-width="70px">
     <el-form-item label="名称" prop="uname">
       <el-input v-model="submitData.uname"></el-input>
@@ -11,7 +11,7 @@
       <el-button type="primary" @click="submit" :disabled="!submitData.uname||!submitData.password">登录</el-button>
     </el-form-item>
   </el-form>
-</section>
+</div>
 </template>
 <script>
 export default {
@@ -36,17 +36,27 @@ export default {
     }
   },
   methods: {
-    submit: async function(){
-      await this.$store.dispatch('login', this.submitData);
-      if(this.$store.getters.IsLogin){
-        this.$router.replace(this.$route.query.redirect || '/');
-      }
+    submit(){
+      const RedirectUrl = Utils.getParameter('redirect')||'/home';
+      axios.post('/passport/login',{
+        name: this.submitData.uname,
+        password: this.submitData.password
+      }).then(res => {
+        const Info = res.data;
+        if(Info.code === 0){
+          window.history.replaceState(null,'',RedirectUrl);
+        }else{
+          throw Info.msg || '登录失败';
+        }
+      }).catch(err=>{
+        ELEMENT.Message.error(err);
+      });
     }
   }
 };
 </script>
 <style lang="scss">
-@import '../../style/_expend.scss';
+@import '../style/_expend.scss';
 .sec-login{
   width: 500px;
   position: fixed;

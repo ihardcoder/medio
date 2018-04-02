@@ -11,6 +11,7 @@ module.exports = Merge({
   output: {
     filename: `subway/js/${IsDev?'[name]':'[name].[chunkhash:8]'}.js`,
     chunkFilename: `subway/js/modules/${IsDev?'[name]' : '[name].[chunkhash:8]'}.js`,
+    publicPath: '/'
   },
   profile: true,
   module: {

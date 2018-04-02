@@ -1,11 +1,13 @@
-const _        = require('lodash');
-const Glob     = require('glob');
-const Path     = require('path');
-const Express  = require('express');
-const Utils    = require('@libs/utils');
+const _ = require('lodash');
+const Glob = require('glob');
+const Path = require('path');
+const Express = require('express');
+const CORS = require('cors')
+const Utils = require('@libs/utils');
 const Constans = require('@libs/contants');
-const Paths    = require('@config/common/path');
-const Routes   = require('./routes');
+const Paths = require('@config/common/path');
+const MW_RenderView = require('./middlewares/render');
+const Routes = require('./routes');
 
 const ENV_CURRENT = _.includes(Constans.ENV, process.env.NODE_ENV) && process.env.NODE_ENV || 'testing';
 
@@ -20,7 +22,7 @@ const Server = new Express();
  * @function launchDevMiddlewares 加载开发中间件
  */
 function launchDevMiddlewares(webpackConfig) {
-  const WebpackMiddleWare = require('./middlewares/dev-webpack')(webpackConfig);
+  const WebpackMiddleWare = require('./middlewares/webpack-dev')(webpackConfig);
   Server.use(WebpackMiddleWare.dev).use(WebpackMiddleWare.hot);
 }
 
@@ -29,11 +31,6 @@ function launchDevMiddlewares(webpackConfig) {
  * @function lift 启动服务器
  */
 function lift() {
-  Server
-    .use('/libs', Express.static(Paths.STATIC_LIBS_PATH))
-    .use('/static', Express.static(Paths.STATIC_COUTPUT_PATH))
-    .use(Express.json());
-
   Server.listen(PORT, () => {
     console.log('Server is listening on port 3000');
   });
@@ -67,7 +64,7 @@ function execute(conf) {
  * @return {Promise} 
  */
 function loadAppConfig(apps = []) {
-  const AppRootPath = Path.resolve(__dirname, '../../app');  
+  const AppRootPath = Path.resolve(__dirname, '../../app');
   return new Promise(resolve => {
     if (_.isEmpty(apps)) {
       resolve(Glob.sync(`${AppRootPath}/**/conf.yml`));
@@ -88,10 +85,26 @@ function loadAppConfig(apps = []) {
  * @param {Array} apps 启动的应用程序列表
  */
 async function launch(apps) {
+  // 读取app配置
   const ConfigFiles = await loadAppConfig(apps);
   if (_.isEmpty(ConfigFiles)) {
     Utils.Log.Error('<Serve>Not found application(s)');
   }
+
+  // 启用中间件
+  Server
+    .use('/libs', Express.static(Paths.STATIC_LIBS_PATH))
+    .use('/static', Express.static(Paths.STATIC_COUTPUT_PATH))
+    .use(Express.json())
+    .use(MW_RenderView());
+
+  if(GLOBAL_CONFIG.enableCors){
+    Server.use(CORS({
+      credentials: true
+    }));
+  }
+
+  // 解析各app的配置
   ConfigFiles.forEach(async conf => {
     await execute(Utils.Parser.ymlToJson(conf));
   });
@@ -107,5 +120,5 @@ module.exports = async (apps, webpackConfig) => {
   if (webpackConfig && ENV_CURRENT === 'development') {
     launchDevMiddlewares(webpackConfig);
   }
-  lift(webpackConfig);
+  lift();
 };

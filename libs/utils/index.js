@@ -9,5 +9,3 @@ exports.Log = require('./_log');
  * @type {Object} 
  */
 exports.Parser = require('./_parser');
-
-exports.RenderView = require('./_render');

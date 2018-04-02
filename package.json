@@ -1,7 +1,7 @@
 {
-  "name": "proj_f",
+  "name": "medio",
   "version": "0.0.1",
-  "description": "go2map fe ci framework",
+  "description": "Node.js framework",
   "main": "libs/index.js",
   "scripts": {
     "install-deps": "npm install --production",
@@ -19,11 +19,13 @@
   "author": "zhoujunpeng <rico.zjp@gmail.com> (https://github.com/zhoujunpeng)",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.4",
     "cross-env": "^5.1.4",
     "glob": "^7.1.2",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
     "module-alias": "^2.0.6",
+    "ora": "^2.0.0",
     "pug": "^2.0.1",
     "shelljs": "^0.8.1"
   },

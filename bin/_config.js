@@ -9,6 +9,13 @@ const BasicWebpackConfig = require(`@config/build/app/${Env}.js`);
 
 const Apps = process.argv[2] && _.uniq(process.argv[2].split(',')) || [];
 
-const Pattern = Apps && Apps.length > 0 ? `${Paths.APP_ROOT_PATH}/[${apps.join('|')}]/conf.build.js` : `${Paths.APP_ROOT_PATH}/**/conf.build.js`;
-
-module.exports = Glob.sync(Pattern).map(file => Merge(BasicWebpackConfig,require(file)));
+module.exports = (apps => {
+  if(apps && apps.length > 0){
+    return apps.map(app => {
+      return Merge(BasicWebpackConfig,require(`${Paths.APP_ROOT_PATH}/${app}/conf.build.js`));
+    });
+  }
+  return Glob.sync(`${Paths.APP_ROOT_PATH}/**/conf.build.js`).map(file => {
+    return Merge(BasicWebpackConfig,require(file));
+  });
+})(Apps);

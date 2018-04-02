@@ -6,11 +6,9 @@ const BasicWebpackConfig = require('./basic.js');
 module.exports = Merge(BasicWebpackConfig, {
   devtool: '#source-map',
   devServer: {
-    clientLogLevel: 'warning',
+    clientLogLevel: 'info',
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
-    host: 'localhost',
-    port: '8888',
     open: false,
     overlay: true,
     publicPath: '/',
@@ -25,12 +23,21 @@ module.exports = Merge(BasicWebpackConfig, {
       error: true
     },
     stats: {
-      children: false,
-      errors: true,
+      assets: true,
       colors: true,
+      errors: true,
+      timings: true,
+      warning: true,
+      children: true,
+      performance: true,
+      hash: false,
       chunks: false,
+      version: false,
+      builtAt: false,
       modules: false,
-      chunkModules:false
+      entrypoints: false,
+      moduleTrace: false,
+      chunkModules: false
     }
   },
   plugins: [

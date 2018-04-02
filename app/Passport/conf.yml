@@ -1,0 +1,22 @@
+name: passport
+routes:
+  - # get passport/
+    type       : page
+    path       : '/'
+    controller : index
+    action     : homepage
+    auth       : false
+  - # post passport/login 
+    type       : api
+    name       : login
+    method     : post
+    controller : index
+    action     : login
+    auth       : false
+  - # get passport/logout 
+    type       : api
+    name       : logout
+    method     : get
+    controller : index
+    action     : logout
+    auth       : false

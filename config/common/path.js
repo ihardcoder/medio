@@ -6,5 +6,5 @@ module.exports = {
   APP_ROOT_PATH       : `${ROOT_PATH}app`,
   STATIC_COUTPUT_PATH : `${ROOT_PATH}public`,
   STATIC_LIBS_PATH    : `${ROOT_PATH}static`,
-  TEMPLATE_ROOT_PATH  : `${ROOT_PATH}template/views`
+  TEMPLATE_ROOT_PATH  : `${ROOT_PATH}components/templates`
 }

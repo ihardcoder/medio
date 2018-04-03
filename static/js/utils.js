@@ -1,3 +1,9 @@
+function getCookieVal(offset) {
+  var endstr = document.cookie.indexOf(";", offset);
+  if (endstr == -1) endstr = document.cookie.length;
+  return unescape(document.cookie.substring(offset, endstr));
+}
+
 window.Utils = {};
 window.Utils.getCookie = function getCookie(name) {
   var arg = name + "=",
@@ -11,12 +17,6 @@ window.Utils.getCookie = function getCookie(name) {
     if (i == 0) break;
   }
   return null;
-}
-
-function getCookieVal(offset) {
-  var endstr = document.cookie.indexOf(";", offset);
-  if (endstr == -1) endstr = document.cookie.length;
-  return unescape(document.cookie.substring(offset, endstr));
 }
 
 window.Utils.setCookie = function setCookie(name, value) {

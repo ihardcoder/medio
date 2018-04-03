@@ -116,9 +116,9 @@ async function launch(apps) {
  * @param {Object|null} webpackConfig webpack配置
  */
 module.exports = async (apps, webpackConfig) => {
-  await launch(apps);
   if (webpackConfig && ENV_CURRENT === 'development') {
     launchDevMiddlewares(webpackConfig);
   }
+  await launch(apps);
   lift();
 };

@@ -6,26 +6,39 @@ module.exports = function (webpackConfig){
   const WebpackCompiler = Webpack(webpackConfig);
 
   const DevMiddleware = WebpackDevMiddleware(WebpackCompiler, {
-    clientLogLevel: 'error',
-    // 不启用压缩
+    logLevel: 'info',
+    hot: false,
+    contentBase: false,
+    open: false,
+    overlay: true,
+    publicPath: '/',
     compress: false,
-    // no lazy mode
     lazy: false,
     watchOptions: {
       ignored: /node_modules/,
       aggregateTimeout: 300,
-      poll: false
+      poll: 1000
     },
+    serverSideRender: true,
     overlay: {
       warnings: false,
       error: true
     },
     stats: {
-      children: false,
-      errors: true,
+      assets: true,
       colors: true,
+      errors: true,
+      timings: true,
+      warning: true,
+      children: true,
+      performance: true,
+      hash: false,
       chunks: false,
+      version: false,
+      builtAt: false,
       modules: false,
+      entrypoints: false,
+      moduleTrace: false,
       chunkModules: false
     }
   });

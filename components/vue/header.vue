@@ -6,17 +6,19 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     :default-active="currentRoute">
-    <el-menu-item index="/" :disabled="disableNav" @click="gotoPage('/')">首页</el-menu-item>
-    <el-submenu index="subway" :disabled="disableNav">
-      <template slot="title">地铁图</template>
-      <el-menu-item index="/subway#/data" @click="gotoPage('/subway#/data')">数据制备</el-menu-item>
-      <el-menu-item index="/subway#/admin" @click="gotoPage('/subway#/admin')">离线包管理</el-menu-item>
-    </el-submenu>
-    <el-submenu index="offline" :disabled="disableNav">
-      <template slot="title">离线模板</template>
-      <el-menu-item index="/offline/admin" @click="gotoPage('/offline/admin')">管理</el-menu-item>
-      <el-menu-item index="/offline/update" @click="gotoPage('/offline/update')">更新</el-menu-item>
-    </el-submenu>
+    <template v-for="route in routes">
+      <el-menu-item v-if="!route.subRoutes||route.subRoutes.length===0"
+        :index="route.path" 
+        :disabled="disableNav" 
+        @click="gotoPage(route.path)">{{route.label}}</el-menu-item>
+      <el-submenu v-else :index="route.path" :disabled="disableNav">
+        <template slot="title">{{route.label}}</template>
+        <el-menu-item v-for="(sub,index) in route.subRoutes"
+          :key="index"
+          :index="sub.path" 
+          @click="gotoPage(sub.path)">{{sub.label}}</el-menu-item>
+      </el-submenu>
+    </template>
   </el-menu>
   <div class="header_userinfo" v-show="isLogin">
     <span class="userinfo_name">{{ username }}</span>
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+import Routes from '../../config/common/routes';
 export default {
   props: {
     currentRoute: {
@@ -40,7 +43,8 @@ export default {
   data(){
     return {
       isLogin: false,
-      username: ''
+      username: '',
+      routes: Routes
     };
   },
   mounted(){
@@ -53,7 +57,7 @@ export default {
   },
   methods: {
     logout(){
-      
+      console.log('logout')
     },
     gotoPage(page){
       window.location.href = page;

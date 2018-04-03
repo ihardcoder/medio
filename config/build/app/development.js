@@ -16,7 +16,7 @@ module.exports = Merge(BasicWebpackConfig, {
     watchOptions: {
       ignored: /node_modules/,
       aggregateTimeout: 300,
-      poll: false
+      poll: 1000
     },
     overlay: {
       warnings: false,

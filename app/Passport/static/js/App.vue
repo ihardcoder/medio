@@ -1,19 +1,23 @@
 <template>
-<div class="sec-login">
-  <el-form :model="submitData" :rules="validRules" label-position="right" label-width="70px">
-    <el-form-item label="名称" prop="uname">
-      <el-input v-model="submitData.uname"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="submitData.password"></el-input>
-    </el-form-item>
-    <el-form-item class="login-form-item login-form-item_submit">
-      <el-button type="primary" @click="submit" :disabled="!submitData.uname||!submitData.password">登录</el-button>
-    </el-form-item>
-  </el-form>
+<div>
+  <medio-header :currentRoute="'/'" :disableNav="true"></medio-header>
+  <div class="sec-login">
+    <el-form :model="submitData" :rules="validRules" label-position="right" label-width="70px">
+      <el-form-item label="名称" prop="uname">
+        <el-input v-model="submitData.uname"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="submitData.password"></el-input>
+      </el-form-item>
+      <el-form-item class="login-form-item login-form-item_submit">
+        <el-button type="primary" @click="submit" :disabled="!submitData.uname||!submitData.password">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </div>
 </template>
 <script>
+import MedioHeader from '@components/header.vue';
 export default {
   data(){
     return {
@@ -52,6 +56,9 @@ export default {
         ELEMENT.Message.error(err);
       });
     }
+  },
+  components: {
+    MedioHeader
   }
 };
 </script>

@@ -4,6 +4,8 @@
 /app/.postcssrc.js
 /app/**/static/
 /app/**/conf.build.js
+/template/components
+/template/styles
 /bin/build.js
 /bin/generate.js
 /bin/reslease.js

@@ -36,7 +36,8 @@ module.exports = Merge({
   },
   resolve: {
     alias: {
-      '@subway': Path.resolve(__dirname,'./static')
+      '@subway': Path.resolve(__dirname,'./static'),
+      '@components': Path.resolve(__dirname,'../../template/components')
     }
   }
 },ConfOfVue());

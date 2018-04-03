@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Ora = require('ora');
+const Chalk = require('chalk');
 
 /**
  * @exports
@@ -7,7 +8,7 @@ const Ora = require('ora');
  * @param {string|Object} msg 信息文本/对象
  */
 exports.Error = function LogError(msg) {
-  Ora().fail(msg);
+  Ora().fail(Chalk.red(msg));
   process.exit(1);
 };
 
@@ -44,7 +45,6 @@ exports.Success = function LogSuccess(msg) {
  * @param {Promise} action loading期间的执行逻辑
  * @param {string} msg loading文本
  * @param {Function|null|undefined} callback loading结束后的回调函数
- * @return {Promise}
  */
 exports.Loading = function LogLoading(action, msg, callback=null) {
   if (!action || typeof action.then !== 'function') {
@@ -52,8 +52,10 @@ exports.Loading = function LogLoading(action, msg, callback=null) {
   }
   const Spinner = Ora(msg).start();
 
-  return action.then(({msg,data}) => {
+  action.then(({msg,data}) => {
     Spinner.succeed(msg);
     _.isFunction(callback) && callback(data);
+  }).catch(err => {
+    throw err;
   });
 }

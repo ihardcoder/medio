@@ -13,7 +13,7 @@ window.Utils.getCookie = function getCookie(name) {
   return null;
 }
 
-window.Utils.getCookieVal = function getCookieVal(offset) {
+function getCookieVal(offset) {
   var endstr = document.cookie.indexOf(";", offset);
   if (endstr == -1) endstr = document.cookie.length;
   return unescape(document.cookie.substring(offset, endstr));

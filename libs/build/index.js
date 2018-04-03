@@ -35,8 +35,6 @@ function run(config,callback=null){
         data: stats
       });
     });
-  }).catch(err=>{
-    Utils.Log.Error(err);
   }),'Building static files...',callback);
 }
 
@@ -46,27 +44,31 @@ function run(config,callback=null){
  * @param {Object} stats build结果
  */
 function print(stats){
-  if (!stats||stats.hasErrors()) {
-    throw stats&&stats.toJson().errors||'Build failed';
-  }
-
-  process.stdout.write(stats.toString({
-    assets       : true,
-    colors       : true,
-    errors       : true,
-    timings      : true,
-    warning      : true,
-    children     : true,
-    performance  : true,
-    hash         : false,
-    chunks       : false,
-    version      : false,
-    builtAt      : false,
-    modules      : false,
-    entrypoints  : false,
-    moduleTrace  : false,
-    chunkModules : false
-  })+'\n');
+  new Promise((resolve,reject) => {
+    if (!stats||stats.hasErrors()) {
+      reject(stats&&stats.toJson().errors||'Build failed');
+    }
+  
+    resolve(process.stdout.write(stats.toString({
+      assets       : true,
+      colors       : true,
+      errors       : true,
+      timings      : true,
+      warning      : true,
+      children     : true,
+      performance  : true,
+      hash         : false,
+      chunks       : false,
+      version      : false,
+      builtAt      : false,
+      modules      : false,
+      entrypoints  : false,
+      moduleTrace  : false,
+      chunkModules : false
+    })+'\n'));
+  }).catch(err => {
+    Utils.Log.Error(err);
+  });
 }
 
 module.exports = async webpackConfig =>{

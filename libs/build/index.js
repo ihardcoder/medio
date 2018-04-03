@@ -12,10 +12,9 @@ function cleanAndCreate(){
     Shell.rm('-rf',Paths.STATIC_COUTPUT_PATH);
     Shell.mkdir('-p',Paths.STATIC_COUTPUT_PATH);
     resolve({
-      msg: 'Cleaning prebuilt files -> done'});
-  }).catch(err => {
-    Utils.Log.Error(err);
-  }),'Cleaning prebuilt files...');
+      msg: 'Cleaning prebuilt files -> done\n'
+    });
+  }),'Cleaning prebuilt files...\n');
 }
 
 /**
@@ -31,11 +30,11 @@ function run(config,callback=null){
         throw err;
       }
       resolve({
-        msg: 'Building static files -> done',
+        msg: 'Building static files -> done\n',
         data: stats
       });
     });
-  }),'Building static files...',callback);
+  }),'Building static files...\n',callback);
 }
 
 /**

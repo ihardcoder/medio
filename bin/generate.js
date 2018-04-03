@@ -1,6 +1,5 @@
 require('module-alias/register');
 
-const _    = require('lodash');
 const Inquirer = require('inquirer');
 const Utils = require('@libs/utils');
 const Generator = require('@libs/generator');

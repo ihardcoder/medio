@@ -1,4 +1,3 @@
-const Path = require('path');
 const Paths = require('@config/common/path');
 const Env = process.env.NODE_ENV || 'testing';
 

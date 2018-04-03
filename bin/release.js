@@ -1,4 +1,4 @@
-require('module-alias/register');
+// require('module-alias/register');
 
-const _    = require('lodash');
-const Libs = require('@libs');
+// const _    = require('lodash');
+// const Libs = require('@libs');

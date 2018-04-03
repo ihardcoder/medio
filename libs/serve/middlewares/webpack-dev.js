@@ -10,7 +10,6 @@ module.exports = function (webpackConfig){
     hot: false,
     contentBase: false,
     open: false,
-    overlay: true,
     publicPath: '/',
     compress: false,
     lazy: false,

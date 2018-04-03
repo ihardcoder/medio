@@ -14,7 +14,7 @@ module.exports = (name, routes) => {
           next();
         });
         break;
-      case "page":
+      case 'page':
         Router.get(Path.join('/', route.path), (req, res, next) => {
           Controller[route.action](req, res);
           next();

@@ -14,7 +14,7 @@ exports.release = (req, res) => {
 };
 exports.homepage = (req, res) => {
   if(IsDev){
-    res.view('index',global.subway);
+    res.view('index');
   }else{
     res.view('index',StaticFiles);
   }

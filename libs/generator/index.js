@@ -25,12 +25,12 @@ function renderTpl(path,appname){
     Shell.rm('-f',path);
   }).catch(err => {
     Utils.Log.Error(err);
-  });;
+  });
 }
 
 module.exports = appname => {
   if(!appname||/[^\w]/.test(appname)){
-    Utils.Log.Error(err);
+    Utils.Log.Error('请输入app名称');
   }
   const OUTPUT_PATH = `${Paths.APP_ROOT_PATH}/${_.capitalize(appname)}`;
 

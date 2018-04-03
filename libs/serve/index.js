@@ -2,7 +2,7 @@ const _ = require('lodash');
 const Glob = require('glob');
 const Path = require('path');
 const Express = require('express');
-const CORS = require('cors')
+const CORS = require('cors');
 const Utils = require('@libs/utils');
 const Constans = require('@libs/contants');
 const Paths = require('@config/common/path');
@@ -32,7 +32,9 @@ function launchDevMiddlewares(webpackConfig) {
  */
 function lift() {
   Server.listen(PORT, () => {
+    /* eslint-disable */
     console.log('Server is listening on port 3000');
+    /* eslint-enable */
   });
 }
 
@@ -70,7 +72,7 @@ function loadAppConfig(apps = []) {
       resolve(Glob.sync(`${AppRootPath}/**/conf.yml`));
     } else {
       resolve(apps.map(name => {
-        return `${AppRootPath}/${_.capitalize(name)}/conf.yml`
+        return `${AppRootPath}/${_.capitalize(name)}/conf.yml`;
       }));
     }
   }).catch(err => {

@@ -23,4 +23,4 @@ module.exports = {
     code: 6,
     msg: '无权限'
   }
-}
+};

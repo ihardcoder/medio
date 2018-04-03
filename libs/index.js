@@ -25,7 +25,7 @@ exports.generate = function(appname){
     Utils.Log.Error('<Generator>Invalid appname');
   }
   Generator(appname);
-}
+};
 /**
  * 构建
  * @exports libs/build
@@ -37,4 +37,4 @@ exports.build = function(env='testing'){
   }catch(e){
     Utils.Log.Error('<Build>Invalid environment variable');
   }
-}
+};

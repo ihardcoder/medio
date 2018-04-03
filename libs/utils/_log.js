@@ -2,12 +2,13 @@ const _ = require('lodash');
 const Ora = require('ora');
 const Chalk = require('chalk');
 
+/* eslint-disable */
 /**
  * @exports
  * @function Error 打印错误信息并且停止进程
  * @param {string|Object} msg 信息文本/对象
  */
-exports.Error = function LogError(msg) {
+const LogError = exports.Error = function(msg) {
   Ora().fail(Chalk.red(msg));
   process.exit(1);
 };
@@ -17,8 +18,8 @@ exports.Error = function LogError(msg) {
  * @function Info 打印普通提示信息
  * @param {string} msg 信息文本
  */
-exports.Info = function LogInfo(msg) {
-  console.info(msg);
+const LogInfo = exports.Info = function(msg) {
+  Ora().info(msg);
 };
 
 /**
@@ -26,8 +27,8 @@ exports.Info = function LogInfo(msg) {
  * @function Warning 打印警告信息
  * @param {string} msg 信息文本
  */
-exports.Warning = function LogWarning(msg) {
-  console.warn(msg);
+const LogWarning = exports.Warning = function(msg) {
+  Ora().warn(Chalk.yellow(msg));
 };
 
 /**
@@ -35,7 +36,7 @@ exports.Warning = function LogWarning(msg) {
  * @function Success 打印成功信息
  * @param {string} msg 信息文本
  */
-exports.Success = function LogSuccess(msg) {
+const LogSuccess = exports.Success = function(msg) {
   Ora().succeed(msg);
 };
 
@@ -46,16 +47,19 @@ exports.Success = function LogSuccess(msg) {
  * @param {string} msg loading文本
  * @param {Function|null|undefined} callback loading结束后的回调函数
  */
-exports.Loading = function LogLoading(action, msg, callback=null) {
+const LogLoading = exports.Loading = function(action, msg, callback = null) {
   if (!action || typeof action.then !== 'function') {
     throw '<Log.loading>Invalid parameter';
   }
   const Spinner = Ora(msg).start();
 
-  action.then(({msg,data}) => {
+  action.then(({
+    msg,
+    data
+  }) => {
     Spinner.succeed(msg);
     _.isFunction(callback) && callback(data);
   }).catch(err => {
-    throw err;
+    LogError(err);
   });
-}
+};

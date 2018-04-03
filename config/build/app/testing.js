@@ -1,4 +1,3 @@
-const Path = require('path');
 const Webpack = require('webpack');
 const Merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');

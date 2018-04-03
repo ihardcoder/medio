@@ -4,10 +4,9 @@ const Path = require('path');
 const Paths = require('@config/common/path');
 const IsDev = process.env.NODE_ENV === 'development' || false;
 
-let devLocals = null;
+const DevLocals = {};
 
 function getAssetsOfSingleCompilation(stats){
-  const Compilation = stats.compilation;
   const Info = stats.toJson({
     hash: true,
     publicPath: true,
@@ -20,7 +19,6 @@ function getAssetsOfSingleCompilation(stats){
   });
 
   const AppName = /^(\w+)\/.+/.exec(Info.assets[0].name)[1];
-  const OutputPath = `${Compilation.outputOptions.path}/${AppName}`;
   const PublicPath = Info.publicPath;
   const Assets = Info.assetsByChunkName;
   const AssetsMap = {};
@@ -56,8 +54,8 @@ function getAssets(stats=[]) {
  */
 module.exports = function() {
   return function(req, res, next) {
-    if(IsDev&&!devLocals&&res.locals&&res.locals.webpackStats){
-      devLocals = getAssets(res.locals.webpackStats.stats)||{};
+    if(IsDev&&_.isEmpty(DevLocals)&&res.locals&&res.locals.webpackStats){
+      Object.assign(DevLocals,getAssets(res.locals.webpackStats.stats)||{});
     }
     res.view = function(name, locals) {
       const AppName = /\/(\w+)\/?$/.exec(req.originalUrl.split('?')[0])[1];
@@ -67,8 +65,8 @@ module.exports = function() {
         basedir: Paths.TEMPLATE_ROOT_PATH
       });
 
-      res.send(ViewRuntime(locals || devLocals[AppName] || {}));
-    }
+      res.send(ViewRuntime(locals || DevLocals[AppName] || {}));
+    };
     next();
-  }
-}
+  };
+};

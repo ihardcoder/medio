@@ -10,7 +10,7 @@ const COOKIE_NAME_AUTH = 'go2map_fe_ci_u';
 
 exports.homepage = (req, res) => {
   if (IsDev) {
-    res.view('index', global.passport);
+    res.view('index');
   } else {
     res.view('index', StaticFiles);
   }

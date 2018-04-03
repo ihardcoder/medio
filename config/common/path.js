@@ -7,4 +7,4 @@ module.exports = {
   STATIC_COUTPUT_PATH : `${ROOT_PATH}public`,
   STATIC_LIBS_PATH    : `${ROOT_PATH}static`,
   TEMPLATE_ROOT_PATH  : `${ROOT_PATH}components/templates`
-}
+};

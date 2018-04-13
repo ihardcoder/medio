@@ -37,6 +37,7 @@ module.exports = Merge({
   resolve: {
     alias: {
       '@passport': Path.resolve(__dirname,'./static'),
+      '@style': Path.resolve(__dirname,'../../components/styles'),
       '@components': Path.resolve(__dirname,'../../components/vue')
     }
   }

@@ -10,7 +10,13 @@ block head-styles
 block content
   div#window
     medio-header(":currentRoute"="'/subway'" ":disableNav"="false")
-    router-view
+    ul(class="subway__navlist" "v-if"="!$route.name")
+      li.navitem.navitem__data
+        router-link(class="navlink" to="data") 数据制备
+      li.navitem.navitem__admin
+        router-link(class="navlink" to="admin") 离线包管理
+    keep-alive("v-else")
+      router-view
 
 block body-scripts
   +libJS("vue.min.js")

@@ -81,3 +81,9 @@
   -moz-user-select: none;
   user-select: none;
 }
+
+@mixin onstyleList(){
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

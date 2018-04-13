@@ -58,6 +58,19 @@ export default {
   methods: {
     logout(){
       console.log('logout')
+      axios.get('/passport/logout',{
+        params: {
+          name: this.username
+        }
+      }).then(res => {
+        if(res.data&&res.data.code === 0){
+          ELEMENT.Message.success('登出成功');
+        }else{
+          throw res.data && res.data.msg ||'请求失败';
+        }
+      }).catch(err => {
+        ELEMENT.Message.error(err);
+      });
     },
     gotoPage(page){
       window.location.href = page;

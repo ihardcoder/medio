@@ -63,7 +63,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../style/_expend.scss';
+@import '~@style/index.scss';
 .sec-login{
   width: 500px;
   position: fixed;

@@ -1,3 +1,4 @@
+import '@subway/style/index.scss';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import MedioHeader from '@components/header.vue';
@@ -25,7 +26,6 @@ const Router = new VueRouter({
 
 // 进入路由页面前判断是否需要登录
 Router.beforeEach((to, from, next) => {
-  console.log(to)
   if (to.matched.some(record => record.meta.requiresAuth)&&!Store.getters.IsLogin){
     Store.dispatch('getLocalUserInfo');
     if(!Store.getters.IsLogin){
@@ -54,4 +54,3 @@ new Vue({
     MedioHeader
   }
 });
-

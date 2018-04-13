@@ -1,3 +1,23 @@
-@import './part/_colors.scss';
-@import './part/_mixins.scss';
-@import './part/_icons.scss';
+@import '~@style/index.scss';
+
+.subway__navlist{
+  max-width: 600px;
+  @include display-flex;
+  @include onstyleList;
+  margin: 20px auto;
+  .navitem{
+    text-align: center;
+    background-color: #409EFF;
+    margin: 0 20px;
+    cursor: pointer;
+    @include flex(1);
+    @include strictHeight(60px);
+    @include border-radius(4px);
+    .navlink{
+      display: block;
+      color: $color-white;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+  }
+}

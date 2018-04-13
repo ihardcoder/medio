@@ -1,5 +1,9 @@
 <template>
 <section class="subway-admin">
+  <el-breadcrumb separator-class="el-icon-arrow-right" class="navlist">
+    <el-breadcrumb-item :to="{ path: '/' }">地铁图</el-breadcrumb-item>
+    <el-breadcrumb-item>离线包管理</el-breadcrumb-item>
+  </el-breadcrumb>
   <el-tabs type="border-card" v-loading="loading" @tab-click="showList">
     <el-tab-pane label="测试环境" env="test">
       <subway-list :dataList="cityListTest" env="testing" @preUpdateCity="preUpdateCity"></subway-list>
@@ -145,5 +149,8 @@ export default {
 <style lang="scss">
 .subway-admin{
   padding: 20px;
+  .navlist{
+    margin-bottom: 20px;
+  }
 }
 </style>

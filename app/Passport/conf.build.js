@@ -11,7 +11,7 @@ module.exports = Merge({
   output: {
     filename: `passport/js/${IsDev?'[name]':'[name].[chunkhash:8]'}.js`,
     chunkFilename: `passport/js/modules/${IsDev?'[name]' : '[name].[chunkhash:8]'}.js`,
-    publicPath: '/'
+    publicPath: '/static/'
   },
   profile: true,
   module: {

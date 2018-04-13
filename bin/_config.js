@@ -3,7 +3,7 @@ const Glob = require('glob');
 const Merge = require('webpack-merge');
 const Paths = require('@config/common/path');
 
-const Env = process.env.NODE_ENV || 'testing';
+const Env = process.env.NODE_ENV || 'production';
 
 const BasicWebpackConfig = require(`@config/build/app/${Env}.js`);
 

@@ -57,14 +57,15 @@ export default {
   },
   methods: {
     logout(){
-      console.log('logout')
       axios.get('/passport/logout',{
         params: {
-          name: this.username
+          name: this.username,
+          redirectUrl: window.location.href.replace(window.location.origin,'')
         }
       }).then(res => {
         if(res.data&&res.data.code === 0){
           ELEMENT.Message.success('登出成功');
+          window.location.href = res.data.redirectUrl||'/passport';
         }else{
           throw res.data && res.data.msg ||'请求失败';
         }

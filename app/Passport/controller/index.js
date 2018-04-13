@@ -37,17 +37,17 @@ exports.login = (req, res) => {
       res.cookie(COOKIE_NAME_AUTH, `${name}_${UserInfo.type}`, {
         expires: new Date(Date.now + 1000 * 60 * 60 * 24 * 30)
       });
+      
       return res.json(Response.SUCCESS.SUCCESS);
   }
 };
 
 exports.logout = (req, res) => {
-  const {
-    name
-  } = req.query;
-  if (!name) {
+  if (!req.query.name) {
     return res.json(Response.FAIL.PARAMS_INCOMPLETED);
   }
   res.clearCookie(COOKIE_NAME_AUTH);
-  return res.json(Response.SUCCESS.SUCCESS);
+  return res.json(Object.assign({...Response.SUCCESS.SUCCESS},{
+    redirectUrl: `/passport?redirect=${req.query.redirectUrl||'/'}`
+  }));
 };

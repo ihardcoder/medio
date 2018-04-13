@@ -1,0 +1,10 @@
+name: 'home'
+auth: true
+index: true
+routes:
+  - # get /home
+    type       : page
+    path       : '/'
+    controller : index
+    action     : homepage
+    auth       : false

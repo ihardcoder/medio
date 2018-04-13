@@ -1,4 +1,5 @@
 name: passport
+auth: false
 routes:
   - # get passport/
     type       : page

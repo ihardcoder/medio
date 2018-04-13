@@ -22,5 +22,9 @@ module.exports = {
   NOT_AUTH: {
     code: 6,
     msg: '无权限'
+  },
+  SERVER_ERROR: {
+    code: 500,
+    msg: '服务器错误'
   }
 };

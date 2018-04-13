@@ -1,0 +1,18 @@
+extends /layout/basic.pug
+
+block title
+  title index
+
+block head-styles
+  +libCSS("element-ui.min.css")
+  +css(index.css)
+
+block content
+  div#window
+
+block body-scripts
+  +libJS("vue.min.js")
+  +libJS("vue-router.min.js")
+  +libJS("vuex.min.js")
+  +libJS("element-ui.min.js")
+  +js(index.js)

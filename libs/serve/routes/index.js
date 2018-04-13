@@ -9,14 +9,14 @@ module.exports = (name, routes) => {
     const Controller = require(`@app/${_.capitalize(name)}/controller/${route.controller}`);
     switch (route.type) {
       case 'api':
-        Router[route.method || 'all'](`/${route.name}`, (req, res, next) => {
-          Controller[route.action](req, res);
+        Router[route.method || 'all'](`/${route.name}`, async (req, res, next) => {
+          await Controller[route.action](req, res);
           next();
         });
         break;
       case 'page':
-        Router.get(Path.join('/', route.path), (req, res, next) => {
-          Controller[route.action](req, res);
+        Router.get(Path.join('/', route.path), async (req, res, next) => {
+          await Controller[route.action](req, res);
           next();
         });
         break;

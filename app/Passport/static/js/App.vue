@@ -39,6 +39,11 @@ export default {
       }
     }
   },
+  mounted(){
+    if(document.cookie.indexOf('go2map_fe_ci_u')!==-1){
+      window.location.href = Utils.getParameter('redirect')||'/home';
+    }
+  },
   methods: {
     submit(){
       const RedirectUrl = Utils.getParameter('redirect')||'/home';
@@ -48,7 +53,7 @@ export default {
       }).then(res => {
         const Info = res.data;
         if(Info.code === 0){
-          window.history.replaceState(null,'',RedirectUrl);
+          window.location.href = RedirectUrl;
         }else{
           throw Info.msg || '登录失败';
         }

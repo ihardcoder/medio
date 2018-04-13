@@ -3,13 +3,15 @@ const Glob = require('glob');
 const Path = require('path');
 const Express = require('express');
 const CORS = require('cors');
+const CookieParser = require('cookie-parser');
 const Utils = require('@libs/utils');
-const Constans = require('@libs/contants');
+const Constans = require('@libs/constants');
 const Paths = require('@config/common/path');
 const MW_RenderView = require('./middlewares/render');
+const MW_Auth = require('./middlewares/auth');
 const Routes = require('./routes');
 
-const ENV_CURRENT = _.includes(Constans.ENV, process.env.NODE_ENV) && process.env.NODE_ENV || 'testing';
+const ENV_CURRENT = _.includes(Constans.ENV, process.env.NODE_ENV) && process.env.NODE_ENV || Constans.ENV.PRODUCTION;
 
 const GLOBAL_CONFIG = require(`@config/env/${ENV_CURRENT}`);
 
@@ -32,30 +34,26 @@ function launchDevMiddlewares(webpackConfig) {
  */
 function lift() {
   Server.listen(PORT, () => {
-    /* eslint-disable */
-    console.log('Server is listening on port 3000');
-    /* eslint-enable */
+    Utils.Log.Info('Server is listening on port 3000');
   });
 }
 
 /**
  * @private
- * @function execute 解析应用程序的配置
+ * @function genRoutes 解析应用程序的配置
  * @param {Object} conf 应用程序配置
  * @return {Promise}
  */
-function execute(conf) {
+function genRoutes(conf) {
   if (_.isEmpty(conf) || !conf.name || !conf.routes || !_.isArray(conf.routes)) {
     Utils.Log.Error('<Serve>Invalid configuration for application(s)');
-    return;
+    process.exit(1);
   }
-  return new Promise(resolve => {
-    const SubRouter = Routes(conf.name, conf.routes);
-    Server.use(`/${conf.name}`, SubRouter);
-    resolve();
-  }).catch(err => {
-    Utils.Log.Error(err);
-  });
+  return {
+    path: `/${conf.name}`,
+    index: conf.index || false,
+    routes: Routes(conf.name, conf.routes)
+  };
 }
 
 /**
@@ -75,8 +73,6 @@ function loadAppConfig(apps = []) {
         return `${AppRootPath}/${_.capitalize(name)}/conf.yml`;
       }));
     }
-  }).catch(err => {
-    Utils.Log.Error(err);
   });
 }
 
@@ -87,8 +83,14 @@ function loadAppConfig(apps = []) {
  * @param {Array} apps 启动的应用程序列表
  */
 async function launch(apps) {
+  // 需授权的app
+  const RequireAuthApps = [];
+  // 所有app的路由列表
+  const AppRoutes = [];
   // 读取app配置
-  const ConfigFiles = await loadAppConfig(apps);
+  const ConfigFiles = await loadAppConfig(apps).catch(err => {
+    Utils.Log.Error(err);
+  });
   if (_.isEmpty(ConfigFiles)) {
     Utils.Log.Error('<Serve>Not found application(s)');
   }
@@ -98,6 +100,7 @@ async function launch(apps) {
     .use('/libs', Express.static(Paths.STATIC_LIBS_PATH))
     .use('/static', Express.static(Paths.STATIC_COUTPUT_PATH))
     .use(Express.json())
+    .use(CookieParser())
     .use(MW_RenderView());
 
   if(GLOBAL_CONFIG.enableCors){
@@ -106,9 +109,27 @@ async function launch(apps) {
     }));
   }
 
-  // 解析各app的配置
-  ConfigFiles.forEach(async conf => {
-    await execute(Utils.Parser.ymlToJson(conf));
+  // 解析各app配置
+  ConfigFiles.forEach(conf => {
+    const AppConfig = Utils.Parser.ymlToJson(conf);
+    if(AppConfig.auth){
+      RequireAuthApps.push(AppConfig.name);
+    }
+    const Result = genRoutes(AppConfig);
+    AppRoutes.push(Result);
+  });
+
+  if(RequireAuthApps.length > 0){
+    Server.use(MW_Auth(RequireAuthApps));
+  }
+
+  AppRoutes.forEach(app => {
+    Server.use(app.path,app.routes);
+    if(app.index){
+      Server.get('/', (req,res) => {
+        return res.redirect(app.path);
+      });
+    }
   });
 }
 

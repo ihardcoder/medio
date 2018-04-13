@@ -10,7 +10,6 @@ const Chalk = require('chalk');
  */
 const LogError = exports.Error = function(msg) {
   Ora().fail(Chalk.red(msg));
-  process.exit(1);
 };
 
 /**

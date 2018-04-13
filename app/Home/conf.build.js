@@ -9,8 +9,8 @@ module.exports = Merge({
     index: Path.resolve(__dirname, './static/js/index.js')
   },
   output: {
-    filename: `<%= appname %>/js/${IsDev?'[name]':'[name].[chunkhash:8]'}.js`,
-    chunkFilename: `<%= appname %>/js/modules/${IsDev?'[name]' : '[name].[chunkhash:8]'}.js`,
+    filename: `home/js/${IsDev?'[name]':'[name].[chunkhash:8]'}.js`,
+    chunkFilename: `home/js/modules/${IsDev?'[name]' : '[name].[chunkhash:8]'}.js`,
     publicPath: '/static/'
   },
   profile: true,
@@ -23,20 +23,20 @@ module.exports = Merge({
       loader: 'url-loader',
       options: {
         limit: 10000,
-        name: `<%= appname %>/assets/img/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
+        name: `home/assets/img/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
       }
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
       loader: 'url-loader',
       options: {
         limit: 10000,
-        name: `<%= appname %>/assets/fonts/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
+        name: `home/assets/fonts/${IsDev?'[name]':'[name].[hash:8]'}.[ext]`
       }
     }]
   },
   resolve: {
     alias: {
-      '@<%= appname %>': Path.resolve(__dirname,'./static'),
+      '@home': Path.resolve(__dirname,'./static'),
       '@style': Path.resolve(__dirname,'../../components/styles'),
       '@components': Path.resolve(__dirname,'../../components/vue')
     }
